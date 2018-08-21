@@ -1,0 +1,67 @@
+#+TITLE: Rainy Image Dataset
+#+AUTHOR: Jonathan Jin
+
+This repository serves as a mirror of the data used for paper [[https://arxiv.org/abs/1609.02087]["Clearing the
+Skies: A deep network architecture for single image rain removal"
+(arXiv:1609.02087)]] by Fu, Huang, Ding, Liao, and Paisley. 
+
+The original dataset is hosted on Baiduyun, which some users -- particularly
+those with no working knowledge of written Chinese -- might find difficult to
+navigate. As such, this repository serves as an alternative way to access this
+dataset. More information can be found at Xueyang Fu's landing page for the
+paper at his personal site here:
+https://xueyangfu.github.io/projects/tip2017.html.
+
+All credit for preparing this dataset goes solely to the original authors.
+
+I additionally intend to expand on Fu et al.'s work on this dataset by providing
+it in a variety of pre-packaged formats, e.g. TensorFlow's [[https://www.tensorflow.org/guide/datasets#reading_from_files][TFRecord]] and [[https://www.hdfgroup.org/solutions/hdf5/][HDF5]].
+
+* Obtaining the Dataset
+
+  This repository uses [[https://git-lfs.github.com/][Git LFS]] to store the image files. As such, a direct clone
+  will not in itself get you the image files. Attempting the clone this
+  repository without Git LFS installed will get you files containing text
+  pointers, rather than the image data itself.
+
+  To obtain the actual image data, first install [[https://git-lfs.github.com/][Git LFS]] per instructions. Then,
+  you have one of several options:
+
+  1. Clone the dataset repository as you would any other. This is most
+     straightforward; however, download time will be slow due to [[https://github.com/git-lfs/git-lfs/wiki/Tutorial#pulling-and-cloning][cloning only
+     allowing sequential file downloads]].
+     
+  2. Alternatively, you can achieve a faster parallel batch download by
+     disabling Git LFS at clone time by first running:
+     #+begin_src bash
+     GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/jinnovation/rainy-image-dataset.git
+     #+end_src 
+
+     And then:
+     #+begin_src bash
+     git lfs pull
+     #+end_src
+
+
+  If you cloned the repository before installing Git LFS, you can download the
+  image data using =git lfs pull=.
+
+* Original README text
+
+  #+begin_src text
+
+    1) This dataset contains 1,000 clean images. Each clean image was used to generate 14 rainy images with different streak orientations and magnitudes.
+
+
+    2) We use PhotoShop to generate rainy images: http://www.photoshopessentials.com/photo-effects/rain/
+
+
+    3) If this dataset helps your research, please cite our two papers that report this dataset:
+
+      [1] X. Fu, J. Huang, D. Zeng, Y. Huang, X. Ding and J. Paisley. ¡°Removing Rain from Single Images via a Deep Detail Network¡±, CVPR, 2017.
+
+      [2] X. Fu, J. Huang, X. Ding, Y. Liao and J. Paisley. ¡°Clearing the Skies: A deep network architecture for single-image rain removal¡±, IEEE Transactions on Image Processing, vol. 26, no. 6, pp. 2944-2956, 2017.
+
+
+    4) Welcome to our homepage: http://smartdsp.xmu.edu.cn/
+  #+end_src
