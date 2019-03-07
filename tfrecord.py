@@ -21,9 +21,6 @@ logger.handlers.append(ExitOnExceptionHandler([logging.CRITICAL]))
 
 tf.enable_eager_execution()
 
-GROUND_TRUTH_DIR = os.path.realpath("./ground truth/")
-RAINY_IMAGE_DIR = os.path.realpath("./rainy image/")
-
 def indices_all(ground_truth_dir):
     return [
         os.path.splitext(os.path.basename(f))[0]
@@ -119,7 +116,7 @@ def write_to_tfrecord(
         ground_truth_dir,
         rainy_image_dir,
 ):
-    indices = list(indices) or indices_all(GROUND_TRUTH_DIR)
+    indices = list(indices) or indices_all(ground_truth_dir)
     ground_truth_dir = os.path.realpath(ground_truth_dir)
     rainy_image_dir = os.path.realpath(rainy_image_dir)
 
