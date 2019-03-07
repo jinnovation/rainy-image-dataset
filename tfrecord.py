@@ -24,10 +24,12 @@ tf.enable_eager_execution()
 GROUND_TRUTH_DIR = os.path.realpath("./ground truth/")
 RAINY_IMAGE_DIR = os.path.realpath("./rainy image/")
 
-INDICES_ALL = [
-    os.path.splitext(os.path.basename(f))[0]
-    for f in glob.glob(os.path.join(GROUND_TRUTH_DIR, "*.jpg"))
-]
+def indices_all(ground_truth_dir):
+    return [
+        os.path.splitext(os.path.basename(f))[0]
+        for f in glob.glob(os.path.join(ground_truth_dir, "*.jpg"))
+    ]
+    
 
 def serialize_example(f_in, f_out, is_strict=True):
     in_contents = f_in.read()
@@ -66,16 +68,16 @@ def serialize_example(f_in, f_out, is_strict=True):
         ),
     }))
 
-def _get_input_files(indices=INDICES_ALL):
+def _get_input_files(rainy_image_dir, indices):
     return {
-        i: glob.glob(os.path.join(RAINY_IMAGE_DIR, "{}_[0-9]*.jpg").format(i))
+        i: glob.glob(os.path.join(rainy_image_dir, "{}_[0-9]*.jpg").format(i))
         for i in indices
     }
 
 
-def _get_output_files(indices=INDICES_ALL):
+def _get_output_files(ground_truth_dir, indices):
     return {
-        i: os.path.join(GROUND_TRUTH_DIR, "{}.jpg".format(i)) for i in indices
+        i: os.path.join(ground_truth_dir, "{}.jpg".format(i)) for i in indices
     }
 
 @click.command()
@@ -87,16 +89,42 @@ def _get_output_files(indices=INDICES_ALL):
     is_flag=True,
     help='When encountering problematic image pairs, whether or not to terminate.',
 )
+@click.option(
+    '-o', '--out',
+    default='rain.tfrecords',
+    show_default=True,
+    help='File name for the output .tfrecords file.',
+)
+@click.option(
+    '--rainy_image_dir',
+    default='./rainy image/',
+    type=click.Path(exists=True),
+    show_default=True,
+)
+@click.option(
+    '--ground_truth_dir',
+    default='./ground truth/',
+    type=click.Path(exists=True),
+    show_default=True,
+)
 @click_log.simple_verbosity_option(
     logger,
     default='DEBUG',
     show_default=True,
 )
-def write_to_tfrecord(indices, strict):
-    indices = list(indices) or INDICES_ALL
+def write_to_tfrecord(
+        indices,
+        strict,
+        out,
+        ground_truth_dir,
+        rainy_image_dir,
+):
+    indices = list(indices) or indices_all(GROUND_TRUTH_DIR)
+    ground_truth_dir = os.path.realpath(ground_truth_dir)
+    rainy_image_dir = os.path.realpath(rainy_image_dir)
 
-    fs_in = _get_input_files(indices)
-    fs_out = _get_output_files(indices)
+    fs_in = _get_input_files(rainy_image_dir, indices)
+    fs_out = _get_output_files(ground_truth_dir, indices)
     
     def gen_pairs():
         for i in indices:
@@ -105,7 +133,7 @@ def write_to_tfrecord(indices, strict):
             for path_in in paths_in:
                 yield (path_in, path_out)
 
-    with tf.python_io.TFRecordWriter('foo.tfrecords') as w:
+    with tf.python_io.TFRecordWriter(out) as w:
         with click.progressbar(
                 list(gen_pairs()),
                 label='Writing data pairs',
