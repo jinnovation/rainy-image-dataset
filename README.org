@@ -61,12 +61,7 @@ it in a variety of pre-packaged formats, e.g. TensorFlow's [[https://www.tensorf
    [[https://www.tensorflow.org/guide/datasets#reading_from_files][TFRecord]] file to facilitate consumption into your TensorFlow model. The
    script interface is as follows:
 
-   #+begin_src bash :results output 
-   python tfrecord.py --help
-   #+end_src
-
-   #+RESULTS:
-   #+begin_example
+   #+begin_src
    Usage: tfrecord.py [OPTIONS] [INDICES]...
 
      Packages the dataset into a TFRecord. Arguments are the input-output
@@ -83,7 +78,7 @@ it in a variety of pre-packaged formats, e.g. TensorFlow's [[https://www.tensorf
      -v, --verbosity LVL      Either CRITICAL, ERROR, WARNING, INFO or DEBUG
                               [default: DEBUG]
      --help                   Show this message and exit.
-   #+end_example
+   #+end_src
 
    To run the script, first [[https://virtualenv.pypa.io/en/stable/][create a virtualenv]] and install dependencies listed
    in =requirements.txt=.
