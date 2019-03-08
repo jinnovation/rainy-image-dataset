@@ -122,15 +122,12 @@ def write_to_tfrecord(indices, strict, out, ground_truth_dir, rainy_image_dir):
     fs_in = _get_input_files(rainy_image_dir, indices)
     fs_out = _get_output_files(ground_truth_dir, indices)
 
-    def gen_pairs():
-        for i in indices:
-            path_out = fs_out[i]
-            paths_in = fs_in[i]
-            for path_in in paths_in:
-                yield (path_in, path_out)
+    _pairs = [
+        (path_in, fs_out[i]) for i in indices for path_in in fs_in[i]
+    ]
 
     with tf.python_io.TFRecordWriter(out) as w:
-        with click.progressbar(list(gen_pairs()), label="Writing data pairs") as pairs:
+        with click.progressbar(_pairs, label="Writing data pairs") as pairs:
             for path_in, path_out in pairs:
                 with tf.gfile.GFile(path_in, "rb") as f_in, \
                      tf.gfile.GFile(path_out, "rb") as f_out:
