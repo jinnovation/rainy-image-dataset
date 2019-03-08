@@ -19,33 +19,81 @@ it in a variety of pre-packaged formats, e.g. TensorFlow's [[https://www.tensorf
 
 * Obtaining the Dataset
 
-  This repository uses [[https://git-lfs.github.com/][Git LFS]] to store the image files. As such, a direct clone
-  will not in itself get you the image files. Attempting the clone this
-  repository without Git LFS installed will get you files containing text
-  pointers, rather than the image data itself.
+** Raw
 
-  To obtain the actual image data, first install [[https://git-lfs.github.com/][Git LFS]] per instructions. Then,
-  you have one of several options:
+   If you'd like to simply retrieve the dataset files as is, there are some
+   caveats.
 
-  1. Clone the dataset repository as you would any other. This is most
-     straightforward; however, download time will be slow due to [[https://github.com/git-lfs/git-lfs/wiki/Tutorial#pulling-and-cloning][cloning only
-     allowing sequential file downloads]].
+   This repository uses [[https://git-lfs.github.com/][Git LFS]] to store the image files. As such, a direct
+   clone will not in itself get you the image files. Attempting the clone this
+   repository without Git LFS installed will get you files containing text
+   pointers, rather than the image data itself.
+
+   To obtain the actual image data, first install [[https://git-lfs.github.com/][Git LFS]] per instructions. Then,
+   you have one of several options:
+
+   1. Clone the dataset repository as you would any other. This is most
+      straightforward; however, download time will be slow due to [[https://github.com/git-lfs/git-lfs/wiki/Tutorial#pulling-and-cloning][cloning only
+      allowing sequential file downloads]].
      
-  2. Alternatively, you can achieve a faster parallel batch download by
-     disabling Git LFS at clone time by first running:
-     #+begin_src bash
-     GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/jinnovation/rainy-image-dataset.git
-     #+end_src 
+   2. Alternatively, you can achieve a faster parallel batch download by
+      disabling Git LFS at clone time by first running:
+      #+begin_src bash :eval never
+      GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/jinnovation/rainy-image-dataset.git
+      #+end_src 
 
-     And then:
-     #+begin_src bash
-     git lfs pull
-     #+end_src
+      And then:
+      #+begin_src bash :eval never
+      git lfs pull
+      #+end_src
 
 
-  If you cloned the repository before installing Git LFS, you can download the
-  image data using =git lfs pull=.
+   If you cloned the repository before installing Git LFS, you can download the
+   image data using:
+   #+begin_src bash :eval never
+   git lfs pull
+   #+end_src
 
+** TFRecord
+
+   Once you've obtained the dataset, this repository also contains a script --
+   aptly named =tfrecord.py == that will package the dataset files into a single
+   [[https://www.tensorflow.org/guide/datasets#reading_from_files][TFRecord]] file to facilitate consumption into your TensorFlow model. The
+   script interface is as follows:
+
+   #+begin_src bash :results output 
+   python tfrecord.py --help
+   #+end_src
+
+   #+RESULTS:
+   #+begin_example
+   Usage: tfrecord.py [OPTIONS] [INDICES]...
+
+     Packages the dataset into a TFRecord. Arguments are the input-output
+     indices to package. If no argument is provided, all indices will be
+     packaged.
+
+   Options:
+     --strict                 When encountering problematic image pairs, whether
+                              or not to terminate.  [default: False]
+     -o, --out TEXT           File name for the output .tfrecord file.  [default:
+                              rain.tfrecord]
+     --rainy_image_dir PATH   [default: ./raw/rainy image/]
+     --ground_truth_dir PATH  [default: ./raw/ground truth/]
+     -v, --verbosity LVL      Either CRITICAL, ERROR, WARNING, INFO or DEBUG
+                              [default: DEBUG]
+     --help                   Show this message and exit.
+   #+end_example
+
+   To run the script, first [[https://virtualenv.pypa.io/en/stable/][create a virtualenv]] and install dependencies listed
+   in =requirements.txt=.
+
+   Note that *the script is written in Python 3*.
+
+   Alternatively, for your convenience, this repository also provides a
+   pre-packaged =.tfrecord= file that was created using all default parameter
+   values.
+   
 * Original README text
 
   #+begin_src text

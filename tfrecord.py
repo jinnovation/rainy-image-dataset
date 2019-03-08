@@ -93,9 +93,9 @@ def _get_output_files(ground_truth_dir, indices):
 @click.option(
     "-o",
     "--out",
-    default="rain.tfrecords",
+    default="rain.tfrecord",
     show_default=True,
-    help="File name for the output .tfrecords file.",
+    help="File name for the output .tfrecord file.",
 )
 @click.option(
     "--rainy_image_dir",
@@ -111,6 +111,10 @@ def _get_output_files(ground_truth_dir, indices):
 )
 @click_log.simple_verbosity_option(logger, default="DEBUG", show_default=True)
 def write_to_tfrecord(indices, strict, out, ground_truth_dir, rainy_image_dir):
+    """Packages the dataset into a TFRecord. Arguments are the input-output indices
+    to package. If no argument is provided, all indices will be packaged.
+
+    """
     indices = list(indices) or indices_all(ground_truth_dir)
     ground_truth_dir = os.path.realpath(ground_truth_dir)
     rainy_image_dir = os.path.realpath(rainy_image_dir)
