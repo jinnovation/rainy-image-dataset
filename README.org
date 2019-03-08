@@ -90,10 +90,6 @@ it in a variety of pre-packaged formats, e.g. TensorFlow's [[https://www.tensorf
 
    Note that *the script is written in Python 3*.
 
-   Alternatively, for your convenience, this repository also provides a
-   pre-packaged =.tfrecord= file that was created using all default parameter
-   values.
-   
 * Original README text
 
   #+begin_src text
