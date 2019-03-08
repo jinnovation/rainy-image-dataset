@@ -73,8 +73,8 @@ it in a variety of pre-packaged formats, e.g. TensorFlow's [[https://www.tensorf
                               or not to terminate.  [default: False]
      -o, --out TEXT           File name for the output .tfrecord file.  [default:
                               rain.tfrecord]
-     --rainy_image_dir PATH   [default: ./raw/rainy image/]
-     --ground_truth_dir PATH  [default: ./raw/ground truth/]
+     --rainy_image_dir PATH   [default: ./rainy image/]
+     --ground_truth_dir PATH  [default: ./ground truth/]
      -v, --verbosity LVL      Either CRITICAL, ERROR, WARNING, INFO or DEBUG
                               [default: DEBUG]
      --help                   Show this message and exit.
